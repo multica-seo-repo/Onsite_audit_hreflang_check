@@ -40,7 +40,7 @@ class ReportTests(unittest.TestCase):
         data = sample()
         for c in data['checks']:
             c.pop('coverage', None)
-            c['instruction'] = '请补充 SF 导出。' if c['id'] == '15.3' else '无需处理。'
+            c['instruction'] = '请补充 SF 导出。' if c['id'] == '15.3' else 'No action needed.'
         rows = report_rows(data)['Checklist']
         self.assertEqual(rows[0], ['Item No.', 'Item Name', 'Check Result', 'Findings', 'Instruction'])
         self.assertEqual(rows[3][4], '请补充 SF 导出。')
@@ -49,7 +49,7 @@ class ReportTests(unittest.TestCase):
     def test_checklist_requires_human_next_step(self):
         data = sample()
         for c in data['checks']:
-            c['instruction'] = '无需处理。'
+            c['instruction'] = 'No action needed.'
         data['checks'][1]['instruction'] = ''
         with self.assertRaises(ValueError):
             validate(data)
@@ -70,9 +70,9 @@ class ReportTests(unittest.TestCase):
     def test_missing_results_are_disclosed(self):
         data = sample()
         row = report_rows(data)['Checklist'][3]
-        self.assertIn('尚未取得', row[3])
-        self.assertIn('未完成验证', row[3])
-        self.assertEqual(row[4], '请补充六项 SF 导出。')
+        self.assertIn('unavailable', row[3])
+        self.assertIn('verification is incomplete', row[3])
+        self.assertEqual(row[4], 'Provide the six SF exports.')
         del data['checks'][2]['missing_evidence_note']
         with self.assertRaises(ValueError):
             validate(data)
@@ -107,7 +107,7 @@ class ReportTests(unittest.TestCase):
             self.assertEqual(wb['Checklist']['D2'].value, data['checks'][0]['finding'])
             self.assertEqual(wb['Checklist']['D2'].data_type, 's')
             self.assertEqual(wb['Checklist']['E1'].value, 'Instruction')
-            self.assertEqual(wb['Checklist']['E2'].value, '无需处理。')
+            self.assertEqual(wb['Checklist']['E2'].value, 'No action needed.')
             self.assertEqual(wb.sheetnames, ['Checklist', '15. HREFLANG'])
             wb.close()
             with self.assertRaises(FileExistsError):

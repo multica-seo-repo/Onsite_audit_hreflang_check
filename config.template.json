@@ -42,7 +42,7 @@
     "reuse_same_crawl_exports": true
   },
   "output": {
-    "language": "zh",
+    "language": "en",
     "format": "xlsx",
     "run_root": "runs",
     "audit_date": null,

@@ -12,22 +12,22 @@ Filename: `15.1-15.3_{name}_onsite_hreflang_audit_{date}.xlsx`. Prefix the cover
 
 ## Findings versus Instruction
 
-**Findings = what was found. Instruction = the next thing a person needs to do.** Use the configured report language, short sentences and familiar words. Do not put next steps in Findings or repeat the whole finding in Instruction.
+**Findings = what was found. Instruction = the next thing a person needs to do.** Use English for report narratives, short sentences and familiar words. Do not put next steps in Findings or repeat the whole finding in Instruction.
 
 - Findings: one short conclusion; include a brief missing-data reminder when needed. Issue: one specific defect, plus the target URL if known.
-- Instruction: usually one short, concrete action. Begin with a verb: “请补充…”, “请添加…”, “请修正…”. A pass with nothing to do uses “无需处理。” / “No action needed.” N/A also uses this when no follow-up is needed.
+- Instruction: usually one short, concrete action. Begin with a verb: “Provide…”, “Add…”, “Correct…”. A pass with nothing to do uses “No action needed.” N/A also uses this when no follow-up is needed.
 - Human check and any unverified 15.3 √ must give a real next step. X uses a summary action in Checklist and the specific fix on each detail row.
 - Keep essential URL/count/limitations; avoid jargon, background paragraphs, broad “optimize hreflang” advice and long chains of actions. Do not invent causes or claim a homepage 429 proves switching is broken.
-- Parameter URL advice stays gentle and brief: “可在改版时考虑语言子目录，并评估迁移影响。”
+- Parameter URL advice stays gentle and brief: “Consider language subdirectories during a redesign and assess migration effects.”
 
 | Case | Findings | Instruction |
 | --- | --- | --- |
-| Confirmed working versions | 中文和英文版本可正常切换。 | 无需处理。 |
-| Missing return link | 英文页面缺少指回中文页面的 hreflang 链接。 | 请添加指向对应中文页面的 hreflang 链接。 |
-| Missing SF results | 尚未取得六项 SF 结果，按初审约定暂记 √，未完成验证。 | 请补充六项 SF 导出。 |
-| Homepage HTTP 429 | 首页请求被限流，未检查语言切换。 | 请提供已保存的首页 HTML 或 SF 结果。 |
-| Parameter URLs | 语言版本使用 ?lang=en 参数。 | 可在改版时考虑语言子目录，并评估迁移影响。 |
-| Missing >100 distinct URLs (Human check) | 发现 126 个缺少 hreflang 的 URL，需复核。 | 请检查是否有大量参数页或 Screaming Frog 抓取异常。 |
+| Confirmed working versions | Chinese and English versions switch correctly. | No action needed. |
+| Missing return link | The English page lacks a return hreflang link to the Chinese page. | Add a hreflang link to the corresponding Chinese page. |
+| Missing SF results | The six SF results are unavailable; provisionally marked √ under the initial-review convention, with verification incomplete. | Provide the six SF exports. |
+| Homepage HTTP 429 | The homepage request was rate-limited; language switching was not checked. | Provide saved homepage HTML or SF results. |
+| Parameter URLs | Language versions use the ?lang=en parameter. | Consider language subdirectories during a redesign and assess migration effects. |
+| Missing >100 distinct URLs (Human check) | Found 126 URLs missing hreflang; review is required. | Check for excessive parameter pages or Screaming Frog crawl anomalies. |
 
 ## Findings input
 
@@ -43,8 +43,8 @@ The agent reviews evidence and writes JSON. The generator validates and formats 
       "id": "15.1",
       "item_name": "Multi-language / country?",
       "result": "√",
-      "finding": "中文和英文版本可正常切换。",
-      "instruction": "无需处理。",
+      "finding": "Chinese and English versions switch correctly.",
+      "instruction": "No action needed.",
       "evidence_state": "available",
       "evidence": ["raw/homepage-observation.json"],
       "issues": []
@@ -57,7 +57,7 @@ The fragment shows one row; real input requires all three. Every finding/instruc
 
 For large-Missing 15.3 Human check, use `issues: []` and an evidence_state matching export availability, not `not_applicable`. Retain the actual distinct Missing count and review reason in Findings; save the complete export/count summary in evidence. The agent applies the >100 rule from audit-rules.md; the generator formats reviewed results and does not count SF rows. If other filters establish X, include only confirmed defects in issues and keep large unreviewed Missing rows in raw evidence.
 
-X issue object: `{"address":"https://example.com/","issue":"语言版本使用 ?lang=en 参数。","instruction":"可在改版时考虑语言子目录，并评估迁移影响。"}`. Use real source addresses; retain known target URLs/codes in Issue.
+X issue object: `{"address":"https://example.com/","issue":"Language versions use the ?lang=en parameter.","instruction":"Consider language subdirectories during a redesign and assess migration effects."}`. Use real source addresses; retain known target URLs/codes in Issue.
 
 For 15.3 √ with partial/unavailable evidence, require nonempty `missing_evidence_note` describing what is missing and that verification is incomplete. The generator appends this fact to Findings; put the user's action in `instruction`. Do not add a second mixed-language notice. Other passes require available evidence. N/A requires not_applicable; skipping 15.3 is an explicit user instruction, not automatically inherited from 15.1.
 
